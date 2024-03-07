@@ -5,6 +5,7 @@
   "author": "James Kerr <kerr@hey.com>",
   "exports": "./debut.js",
   "types": "debut.d.ts",
+  "type": "module",
   "files": [
     "debut.js",
     "debut.min.js",
