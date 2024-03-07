@@ -6,7 +6,7 @@
   "exports": "./debut.js",
   "types": "debut.d.ts",
   "files": [
-    "debug.js",
+    "debut.js",
     "debut.min.js",
     "debut.d.ts"
   ],
