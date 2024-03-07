@@ -7,7 +7,8 @@
   "types": "debut.d.ts",
   "files": [
     "debug.js",
-    "debut.min.js"
+    "debut.min.js",
+    "debut.d.ts"
   ],
   "scripts": {
     "dev": "five-server .",
