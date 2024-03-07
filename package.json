@@ -1,16 +1,18 @@
 {
   "name": "debut-css",
   "version": "0.2.0",
-  "main": "debut.min.js",
-  "files": [
-    "debut.min.js"
-  ],
   "license": "MIT",
   "author": "James Kerr <kerr@hey.com>",
+  "main": "debut.js",
+  "files": [
+    "debug.js",
+    "debut.min.js"
+  ],
   "scripts": {
     "dev": "five-server .",
-    "build": "esbuild index.js --bundle --minify --format=esm --outfile=debut.min.js",
-    "prepack": "yarn build"
+    "build": "esbuild index.js --bundle --format=esm --outfile=debut.js",
+    "build:min": "yarn build --minify --outfile=debut.min.js",
+    "prepack": "yarn build && yarn build:min"
   },
   "dependencies": {
     "transitions-all-settled": "^0.2.0"
