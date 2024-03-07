@@ -1,6 +1,6 @@
 {
   "name": "debut-css",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "license": "MIT",
   "author": "James Kerr <kerr@hey.com>",
   "exports": "./debut.js",
