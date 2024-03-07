@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "license": "MIT",
   "author": "James Kerr <kerr@hey.com>",
-  "main": "debut.js",
+  "exports": "./debut.js",
   "files": [
     "debug.js",
     "debut.min.js"
