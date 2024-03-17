@@ -7,8 +7,8 @@
 </head>
 <body>
     <button>Click Me</button>
-    <dialog data-debut="modal:up,fade" style="--enter-delay:0; --exit-delay:500ms; ">
-        <h1 data-debut="modal:up,fade" style="--enter-delay:500ms; --exit-delay:0;">My Online Debut</h1>
+    <dialog data-debut="up fade" style="--enter-delay:0; --exit-delay:500ms; ">
+        <h1 data-debut-target="modal-title" data-debut="up fade" style="--enter-delay:500ms; --exit-delay:0;">My Online Debut</h1>
         <button id="dismiss">Done</button>
     </dialog>
 
@@ -75,13 +75,15 @@
         const button = document.querySelector("button")
         const dismiss = document.querySelector("#dismiss")
 
+        const scene = debut.target(dialog, "modal-title")
+
         button.onclick = () => {
             dialog.showModal()
-            debut.enter("modal")
+            scene.enter()
         }
 
         dismiss.onclick = async () => {
-            await debut.exit("modal")
+            await scene.exit()
             dialog.close()
         }
     </script>
