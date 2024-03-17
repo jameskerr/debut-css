@@ -1,10 +1,9 @@
-import {selectGroup} from "./lib/dom.js"
+export {target} from "./lib/target.js"
 
-
-export function enter(groupName) {
-    return selectGroup(groupName).enter()
+export function enter(...targetArgs) {
+    return target(...targetArgs).enter()
 }
 
-export function exit(groupName) {
-    return selectGroup(groupName).exit()
+export function exit(...targetArgs) {
+    return target(...targetArgs).exit()
 }
