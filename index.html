@@ -1,91 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test Debut</title>
-</head>
-<body>
+  </head>
+  <body>
     <button>Click Me</button>
-    <dialog data-debut="up fade" style="--enter-delay:0; --exit-delay:500ms; ">
-        <h1 data-debut-target="modal-title" data-debut="up fade" style="--enter-delay:500ms; --exit-delay:0;">My Online Debut</h1>
-        <button id="dismiss">Done</button>
+    <dialog style="--enter-delay: 0; --exit-delay: 500ms">
+      <h1 id="modal-title" style="--enter-delay: 500ms; --exit-delay: 0">
+        My Online Debut
+      </h1>
+      <button id="dismiss">Done</button>
     </dialog>
 
     <style>
-        dialog::backdrop {
-            opacity: 0;
-        }
-        .fade--before-enter {
-            opacity: 0;
-        }
-        .fade--enter {
-            opacity: 1;
-            transition-duration: 1s;
-            transition-delay: var(--enter-delay, 0);
-        }
-        .fade--after-enter {
-            opacity: 1;
-        }
-        .fade--before-exit {
-            opacity: 1
-        }
-        .fade--exit {
-            opacity: 0;
-            transition-duration: 1s;
-            transition-delay: var(--exit-delay, 0);
-        }
-        .fade--after-exit {
-            opacity: 0;
-        }
+      dialog::backdrop {
+        opacity: 0;
+      }
+      .fade--before-enter {
+        opacity: 0;
+      }
+      .fade--enter {
+        opacity: 1;
+        transition-duration: 1s;
+        transition-delay: var(--enter-delay, 0);
+      }
+      .fade--after-enter {
+        opacity: 1;
+      }
+      .fade--before-exit {
+        opacity: 1;
+      }
+      .fade--exit {
+        opacity: 0;
+        transition-duration: 1s;
+        transition-delay: var(--exit-delay, 0);
+      }
+      .fade--after-exit {
+        opacity: 0;
+      }
 
-        .up--before-enter {
-            transform: translateY(100%);
-        }
-        .up--enter {
-            transform: translateY(0);
-            transition-duration: 1s;
-            transition-delay: var(--enter-delay, 0)
-        }
-        .up--after-enter {
-            transform: translateY(0);
-        }
-        .up--before-exit {
-            transform: translateY(0);
-        }
-        .up--exit {
-            transform: translateY(100%);
-            transition-duration: 1s;
-        }
-        .up--after-exit {
-            transform: translateY(100%);
-        }
+      .up--before-enter {
+        transform: translateY(100%);
+      }
+      .up--enter {
+        transform: translateY(0);
+        transition-duration: 1s;
+        transition-delay: var(--enter-delay, 0);
+      }
+      .up--after-enter {
+        transform: translateY(0);
+      }
+      .up--before-exit {
+        transform: translateY(0);
+      }
+      .up--exit {
+        transform: translateY(100%);
+        transition-duration: 1s;
+      }
+      .up--after-exit {
+        transform: translateY(100%);
+      }
     </style>
 
     <script type="importmap">
-        {
-            "imports": {
-                "transitions-all-settled": "/node_modules/transitions-all-settled/index.js"
-            }
+      {
+        "imports": {
+          "transitions-all-settled": "/node_modules/transitions-all-settled/index.js"
         }
+      }
     </script>
     <script type="module">
-        import * as debut from "./index.js"
-        const dialog = document.querySelector("dialog")
-        const button = document.querySelector("button")
-        const dismiss = document.querySelector("#dismiss")
+      import { enter, exit } from "./index.js";
+      const dialog = document.querySelector("dialog");
+      const title = document.querySelector("#modal-title");
+      const button = document.querySelector("button");
+      const dismiss = document.querySelector("#dismiss");
 
-        const scene = debut.target(dialog, "modal-title")
+      button.onclick = () => {
+        dialog.showModal();
+        enter(dialog, "fade", "up");
+        enter(title, "fade", "up");
+      };
 
-        button.onclick = () => {
-            dialog.showModal()
-            scene.enter()
-        }
-
-        dismiss.onclick = async () => {
-            await scene.exit()
-            dialog.close()
-        }
+      dismiss.onclick = async () => {
+        await Promise.allSettled([
+          exit(dialog, "fade", "up"),
+          exit(title, "fade", "up"),
+        ]);
+        dialog.close();
+      };
     </script>
-</body>
+  </body>
 </html>

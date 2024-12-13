@@ -1,13 +1,22 @@
 # Debut CSS
 
-Simple entrance and exit animations using CSS transitions.
+Simple enter and exit animations using CSS transitions.
 
-Define simple transitions in your CSS, compose them in your HTML, and trigger them with JavaScript.
+Define simple transitions in your CSS and trigger them with JavaScript.
 
 ```html
-<dialog data-debut="fade">
+<dialog></dialog>
 ```
 
+```js
+import { enter, exit } from "debut-css";
+
+const dialog = document.querySelector("dialog");
+await enter(dialog, "fade");
+await exit(dialog, "fade");
+```
+
+<!-- prettier-ignore -->
 ```css
 .fade { /* */ }
 
@@ -20,74 +29,33 @@ Define simple transitions in your CSS, compose them in your HTML, and trigger th
 .fade--after-exit {/* */}
 ```
 
-```js
-import {enter, exit} from "debut-css"
+## Usage
 
-const dialog = document.querySelector("dialog")
-await enter(dialog)
-await exit(dialog)
+There are only two functions exported and they have the same signature.
+
+```ts
+function enter(node: HTMLElement, ...effects: string[]): Promise<void>;
+function exit(node: HTMLElement, ...effects: string[]): Promise<void>;
 ```
 
-## How It Works
-
-These are the steps.
-
-1. Target the elements you wish to transition.
-2. Apply the above classes at the proper times to each element.
-3. Resolve the promise when all transitions above have settled.
-
-Caveat: When calling enter or exit on an element with no transition-duration value, the promise will never return. It will wait for the first transition-start event indefinitely. I plan to add a failsafe for that case that throws an error after 1 second if no transition-start event comes around.
-
-### Targeting Elements
-
-As for targeting, there are two ways.
-
-1. Pass in the exact elements you wish to transition.
-2. Pass in the name of a "target". A target is set using the data-debut-target attribute. Any elements in the DOM that have that target value will be transitioned.
-
-You can plug-n-play these targeting strategies as arguments to enter and exit.
+The node is any HTML element and the reset of the arguments are strings that specify the names of the effects to apply to that node. The effect becomes the prefix for all the css classes that debut will generate and apply at the proper times. For example...
 
 ```js
-enter(...targetArguments)
-exit(...targetArguuments)
+enter(el, "modal");
 ```
 
-For example, here we target a
+Will apply these CSS classes to 'el'.
 
-```html
-<body data-debut="fade move" data-debut-target="modal-backdrop"></body>
-<dialog> 
-    <-- Assume this dialog has the onClick event listener attached to it-->
-</dialog>
-
-<script>
-function onClick(e) {
-    await exit(e.currentTarget, "modal-backdrop")
-    e.currentTarget.close()
+```css
+.modal--before-enter {
+  // Define the starting point here
 }
-</script>
+.modal--enter {
+  // Define the ending point and transition styles
+}
+.modal--after-enter {
+  // Define any styles that should remain after entering is finished.
+}
 ```
 
-To avoid needing to use the same targeting strageties for both the enter and the exit functions, you can use the `target` method, then call enter and exit on it. The target object will re-query the DOM if it needs to at the start of the enter and exit methods.
-
-```js
-const modal = target("modal-foreground", "modal-backdrop")
-await modal.enter()
-await modal.exit()
-```
-
-```js
-class MyHandlerClass {
-    constructor() {
-        this.modal = target("modal-fg", "modal-bg")
-    }
-
-    open() {
-        this.modal.enter()
-    }
-
-    close() {
-        this.modal.exit()
-    }
-} 
-```
+Note: When calling enter or exit on an element with no transition-duration value, the promise reject with an error. It will wait for a 'transitionrun' event to fire before 100ms before throwing the error.
