@@ -77,4 +77,43 @@ describe("enter/exit", () => {
     await enter(el, fx); // interrupt with the same effect, reversing
     expect(classes(el)).to.deep.equal(["fade", "fade--after-enter"]);
   });
+
+  it("applies multiple effects together and settles both", async () => {
+    const a = effect("fade-a");
+    const b = effect("fade-b");
+
+    await enter(el, a, b);
+
+    expect(classes(el)).to.deep.equal([
+      "fade-a",
+      "fade-a--after-enter",
+      "fade-b",
+      "fade-b--after-enter",
+    ]);
+  });
+
+  it("does not confuse duplicate effect names with a different effect set", async () => {
+    // Regression test for Animation#matches(): comparing effect arrays by
+    // "every element of the old set is present somewhere in the new set"
+    // (ignoring multiplicity) treated ["dup", "dup"] and ["dup", "other"]
+    // as the same running animation, since they're equal length and every
+    // element of the first happens to appear in the second. That caused
+    // the interrupting call to silently reuse the old, wrong effects
+    // instead of running "other" at all.
+    const dup = effect("dup", 80);
+    const other = effect("other", 80);
+
+    enter(el, dup, dup);
+    await wait(10);
+
+    const interrupted = exit(el, dup, other);
+
+    expect(
+      el.classList.contains(`${other}--before-exit`) ||
+        el.classList.contains(`${other}--exit`),
+    ).to.equal(true, "the interrupting exit should apply the 'other' effect");
+
+    await interrupted;
+    expect(classes(el)).to.deep.equal([]);
+  });
 });
