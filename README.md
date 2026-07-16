@@ -59,3 +59,17 @@ Will apply these CSS classes to 'el'.
 ```
 
 Note: When calling enter or exit on an element with no transition-duration value, the promise reject with an error. It will wait for a 'transitionrun' event to fire before 100ms before throwing the error.
+
+## Testing
+
+Tests run in a real browser (via [Playwright](https://playwright.dev/)) rather than a mocked DOM, since this library's whole job is orchestrating real CSS transition events.
+
+```sh
+yarn install
+npx playwright install chromium
+yarn test
+```
+
+`yarn test` runs [`@web/test-runner`](https://modern-web.dev/docs/test-runner/overview/) against everything in `test/**/*.test.js` in headless Chromium. For interactive/watch mode, use `npx web-test-runner --watch`.
+
+This repo is pinned to Node 24 via `.node-version`. Tests also run in CI on every pull request (`.github/workflows/ci.yml`).
