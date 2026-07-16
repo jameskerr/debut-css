@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "dev": "five-server .",
+    "test": "web-test-runner",
     "build": "esbuild index.js --bundle --format=esm --outfile=debut.js",
     "build:min": "yarn build --minify --outfile=debut.min.js",
     "prepack": "yarn build && yarn build:min"
@@ -21,6 +22,9 @@
     "transitions-all-settled": "0.4.0"
   },
   "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@web/test-runner": "^1.0.0",
+    "@web/test-runner-playwright": "^1.0.0",
     "esbuild": "^0.20.1",
     "five-server": "^0.3.2"
   }
